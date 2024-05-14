@@ -1,12 +1,8 @@
-import os
 import cv2
 import numpy as np
-from dotenv import load_dotenv
-load_dotenv()
 
-YOLO_DIR = os.getenv('YOLO_DIR')
 
-with open(f'{YOLO_DIR}/yolov3_classes.txt', 'r') as f:
+with open(f'detection_module/yolov3_classes.txt', 'r') as f:
     classes = [line.strip() for line in f.readlines()]
 
 
@@ -18,8 +14,8 @@ def detect_objects(uploaded_image):
     scale = 0.00392
 
     net = cv2.dnn.readNet(
-        f'{YOLO_DIR}/yolov3.weights',
-        f'{YOLO_DIR}/yolov3.cfg',
+        f'detection_module/yolov3.weights',
+        f'detection_module/yolov3.cfg',
     )
     blob = cv2.dnn.blobFromImage(image, scale, (416, 416), (0, 0, 0), True, crop=False)
     net.setInput(blob)
