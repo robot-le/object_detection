@@ -2,9 +2,9 @@ from rest_framework import status
 from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from PIL import Image
 
 from .serializers import ImageUploadSerializer
+from detection_module.detect_object import detect_objects
 
 
 class ImageProcessAPIView(APIView):
@@ -15,9 +15,9 @@ class ImageProcessAPIView(APIView):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             uploaded_file = serializer.validated_data.get('image')
-            image = Image.open(uploaded_file)
+            detected_objects = detect_objects(uploaded_file)
             return Response(
-                {'image_size': image.size},
+                {'detected_objects': detected_objects},
                 status=status.HTTP_201_CREATED
             )
 
